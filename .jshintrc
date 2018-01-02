@@ -1,0 +1,7 @@
+{
+	"esversion": 6,
+	"undef": false,
+	"unused": true,
+	"loopfunc": true,
+	"evil": true
+}
