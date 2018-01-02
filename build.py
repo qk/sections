@@ -26,7 +26,7 @@ def build(out_fname=None, **keywords):
 if __name__ == "__main__":
 	parser = ArgumentParser(description="simple build script")
 	parser.add_argument(
-		"-o", dest="out_fname", type=str, default="Sections.user.js",
+		"-o", dest="out_fname", type=str, default="sections.user.js",
 		help="output filename, f.i. {installdir}/{filename}"
 	)
 	parser.add_argument(
