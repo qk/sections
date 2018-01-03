@@ -1,6 +1,7 @@
 // ==UserScript==
 // @name         Sections
 // @namespace    http://tampermonkey.net/
+// @run-at       document-end
 // @version      0.3
 // @description  Detect and Jump through Sections (blog posts) of a webpage. Won't work on pages that reject inline-scripts (steam, github, etc) or on pages that load Prototype.js.
 // @author       p
@@ -16,9 +17,12 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-%globals
-%lib
-%filters
-%sectionjumper
+(function(window, document) {
+	%globals
 
-%sections
+	%lib
+	%filters
+	%sectionjumper
+
+	%sections
+})(window, document);

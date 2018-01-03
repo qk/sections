@@ -191,10 +191,10 @@ class SectionJumper {
 				let progress = elapsedTime/this.globals.scrollDuration;
 				this.lastY = this.toY - this.distance*Math.pow(0.32,7*progress) + 1;
 				if (this.verbose) console.log("scrolling ", this.lastY, Y - this.toY);
-				window.scrollTo(this.toX, this.lastY);
+				window.scroll(this.toX, this.lastY);
 				// this.scrollpoints[this.scrollpoints.length-1].push({now:now, Y:Y, toY:this.toY, stepY:this.lastY, elapsed:elapsedTime});
 			} else {
-				window.scrollTo(this.toX, this.toY);
+				window.scroll(this.toX, this.toY);
 				this.scrollingto = -1;
 				this.running = false;
 				this.noopCount = 0;
