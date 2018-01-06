@@ -55,13 +55,13 @@
 			// "differenty", // probably already implied in equalx
 			"broad", // pretty dirty
 			// "mediansized",
+			"trim",
 			"separators", // costly
 			"separators", // costly again
 			"partitionByClassNames",
 			"noDuplicates",
-			// "equalClassNames",
 			"trim",
-			// "noSingles",
+			// "noSingles", // applied after each step already 
 			"sortupdate"
 		];
 		let allFilterTimer = new Timer("done filtering");
@@ -98,7 +98,7 @@
 		let scoringTimer = new Timer("calculated scores, selected sections");
 		// table of values for use in the scorefunction
 		let table = {
-			"A": sets.map(set => sum(set.map(node => round(node.area)))), // area
+			"A": softmax(sets.map(set => sum(set.map(node => round(node.area))))), // area
 			"W": sets.map(set => mean(set.map(node => node.w))), // mean width
 			"L": sets.map(set => set.length),
 			"lL": sets.map(set => Math.log(set.length)),
@@ -192,7 +192,7 @@
 		// lL, stdA, 1-stdY, lLA, lLAC, +gLACT(1-stdH), lLAU, lLAU'
 		// let scoreFormula = "FgLACT(1-stdH)";
 		// let scoreFormula = "aFgLACT/(1+stdH)";
-		let scoreFormula = "gLaFCT/(1+stdH)";
+		let scoreFormula = "AgLaFCT/(1+stdH)";
 		let score = evaluate(scoreFormula);
 		let sortedI = argsort(sets.map((v,i) => score(i))).reverse();
 		scoringTimer.stop();
@@ -346,6 +346,7 @@
 
 	if (globals.useScrollWheel) {
 		window.addEventListener("wheel", e => {
+			if (e.altKey) return;
 			if (sj.sections) {
 				e.stopPropagation();
 				e.preventDefault();
