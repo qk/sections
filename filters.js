@@ -19,13 +19,25 @@ function createFilters(sortupdate, verbose) {
 		equalx: function(sets) {
 			// partition candidate sets into sets of elements with equal x-coordinates
 			let equalx = [];
-			for (let i = 0; i < sets.length; i++) {
-				let P = partition(sets[i], node => Math.round(node.x + node.w));
+			for (let set of sets) {
+				let P = partition(set, node => Math.round(node.x));
 				for (let p in P) {
 					equalx.push(P[p]);
 				}
 			}
 			return equalx;
+		},
+
+		equalWidth: function(sets) {
+			// partition candidate sets into sets of elements with equal x-coordinates
+			let equalW = [];
+			for (let set of sets) {
+				let P = partition(set, node => Math.round(node.w));
+				for (let p in P) {
+					equalW.push(P[p]);
+				}
+			}
+			return equalW;
 		},
 
 		// separate out elements with equal classnames, because those tend to be separators
@@ -390,8 +402,8 @@ function createFilters(sortupdate, verbose) {
 				let trimmed = set.map(shallowCopy);
 				trimmed = trimmed.sort((a,b) => a.y - b.y);
 				let stdH = std(trimmed.map(n => n.h));
-				let meanH = mean(trimmed.map(n => n.h));
-				let minHeight = meanH - 2*stdH;
+				// let meanH = mean(trimmed.map(n => n.h));
+				let minHeight = 3*stdH;
 				if (verbose) console.log(minHeight*globals.H, "trim: minimum height");
 				if (stdH === 0) continue;
 
