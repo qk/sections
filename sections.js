@@ -8,6 +8,7 @@
 
 	// find candidate sets
 	let sets;
+	let root = document.querySelector('#' + globals.contentDivIDs.join(', #')) || document.body;
 	if (false) {
 		let timer = new Timer("wrapped elements (* strategy) in");
 		let nodes = [].map.call(document.body.getElementsByTagName("*"), wrap);
@@ -23,16 +24,16 @@
 		timer.stop();
 	} else {
 		let timer = new Timer("wrapped elements (PrioQ strategy)");
-		sets = (new SetCollector()).collect(document.body, null, 2, 0.1).slice(0,20);
+		sets = (new SetCollector()).collect(root, null, 2, 0.1).slice(0,20);
 		timer.stop();
 	}
 
 	// find more candidate sets
 	let leafsFSFTimer = new Timer("fuzzy section detection (leaf method)");
-	let leafsFSF = new FuzzySectionFinder(document.body, 1000, globals);
+	let leafsFSF = new FuzzySectionFinder(root, 1000, globals);
 	leafsFSF.detect(document.body);
 	leafsFSFTimer.stop();
-	console.table(leafsFSF.detect(document.body, null).map(n => ({node:n.node, sections:n.node.children[0], size:n.node.children.length, hits:n.count})));
+	console.table(leafsFSF.detect(root, null).map(n => ({node:n.node, sections:n.node.children[0], size:n.node.children.length, hits:n.count})));
 
 	// find even more candidate sets
 	let areaFSFTimer = new Timer("fuzzy section detection (area method)");
@@ -51,6 +52,7 @@
 			"noDominators",
 			"minimumRequirements",
 			"equalx",
+			// "equalWidth",
 			"sortupdate",
 			// "differenty", // probably already implied in equalx
 			"broad", // pretty dirty

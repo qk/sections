@@ -38,5 +38,10 @@ let globals = {
 		if (isNaN(W)) throw "calculated width is NaN";
 		this.H = H;
 		this.W = W;
-	}
+	},
+	contentDivIDs: [
+		'main',
+		'content',
+		'WikiaMainContent'
+	],
 };
