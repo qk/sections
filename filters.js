@@ -341,6 +341,7 @@ function createFilters(sortupdate, verbose) {
 				let P = partition(sets[i], node =>
 					(/^h[01234]$/i.test(node.node.tagName) && "hx") || node.node.tagName
 				);
+				console.log(P);
 				for (let p in P) {
 					if (verbose) console.log("tag", p, P[p].length);
 					equalTags.push(P[p]);
@@ -392,6 +393,19 @@ function createFilters(sortupdate, verbose) {
 			}
 
 			return remaining;
+		},
+
+		trim2: function(sets) {
+			let additional = [];
+			let num = 3;
+			for (let set of sets) {
+				for (let i = 1; i <= num; i++) {
+					for (let j = 1; j <= num; j++) {
+						additional.push(set.slice(i,-j).map(shallowCopy));
+					}
+				}
+			}
+			return sets.concat(additional);
 		},
 
 		trim: function(sets) {
