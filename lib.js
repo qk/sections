@@ -248,13 +248,18 @@ class SetCollector extends PrioQ {
 
 	collect(root, exclude, inertia, eps) {
 		this.counter = 0;
-		// skip the body element to avoid evaluating if [#header,#content,#footer] is a valid section-set
-		// I haven't encountered sections as direct children of body yet.
-		// sortupdate([].filter.call(document.body.children, ignoreTags).map(wrap).map(update)).forEach(node => descend(node, 2));
-		[].filter.call(root.children, ignoreTags)
-			.map(wrap).map(update)
-			.sort((a,b) => a.y - b.y).map(update)
-			.forEach(node => this.descend(node, exclude, inertia, eps));
+		if (root == document.body) {
+			// skip the body element to avoid evaluating if [#header,#content,#footer] 
+			// is a valid section-set. I haven't encountered sections as direct 
+			// children of document.body yet.
+			[].filter.call(root.children, ignoreTags)
+				.map(wrap).map(update)
+				.sort((a,b) => a.y - b.y).map(update)
+				.forEach(node => this.descend(node, exclude, inertia, eps));
+		} else {
+			// start descending right at the root node
+			this.descend(wrap(root), exclude, inertia, eps);
+		}
 		console.log("looked at", this.counter, "elements");
 		return this.Q
 			.map(q => q.set)
