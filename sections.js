@@ -27,6 +27,7 @@
 		sets = (new SetCollector()).collect(root, null, 2, 0.1).slice(0,20);
 		timer.stop();
 	}
+	console.table(sets.map(set => ({sections:set[0].node,  size:set.length})));
 
 	// find more candidate sets
 	let leafsFSFTimer = new Timer("fuzzy section detection (leaf method)");
@@ -57,7 +58,7 @@
 			// "differenty", // probably already implied in equalx
 			"broad", // pretty dirty
 			// "mediansized",
-			"trim",
+			"trim2",
 			"separators", // costly
 			"separators", // costly again
 			"partitionByClassNames",
@@ -207,7 +208,7 @@
 				for (let f of scorefunctions) {
 					index = f.formula;
 					value = f(i);
-					entry[index] = isNaN(value) ? value : round(value,2);
+					entry[index] = isNaN(value) ? value : round(value,3);
 				}
 				entry.node = sets[i][0].node;
 				return entry;
