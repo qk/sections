@@ -21,6 +21,7 @@ class SectionJumper {
 		this.noopCount = 0;
 	}
 
+	// updates section size measurements
 	update() {
 		this.updateTimer.reset();
 		// update section positions if document parts were resized after the sections were detected
@@ -33,6 +34,7 @@ class SectionJumper {
 		this.updateTimer.stop();
 	}
 
+	// figure out current section and  which section to jump to
 	jump(di) {
 		// since no 'current section index' is kept, this function has to figure 
 		// it out for itself. this is complicated, but allows for much greater 
@@ -139,6 +141,7 @@ class SectionJumper {
 		}
 	}
 
+	// initiate scrolling animation
 	startScroll(i) {
 		this.scrollingto = i;
 		let h, y;
@@ -166,9 +169,9 @@ class SectionJumper {
 		this.toY = Math.min(Math.round(y), pageBottom);
 		this.startY = Y;
 		this.distance = this.toY - this.startY;
-		this.startTime = performance.now();
+		this.startTime = performance.now() - this.frameDuration - 1; // start scrolling in the first frame already
 		if (!this.running) {
-			this.lastScroll = performance.now();
+			this.lastScroll = this.startTime;
 			this.lastY = Y;
 			this.running = true;
 			// try {
@@ -180,6 +183,7 @@ class SectionJumper {
 		}
 	}
 
+	// perform one scrolling step
 	scroll(now) {
 		let dt = (now - this.lastScroll);
 		let elapsedTime = (now - this.startTime);
