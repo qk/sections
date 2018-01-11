@@ -101,9 +101,13 @@ class SectionJumper {
 						break;
 					}
 				}
+				// if the page was just loaded und all sections are below the alignment bar, assume i == -1
+				if (i == 0 && top >= viewTopIfSmall + tol) {
+					i--;
+				}
 				// if a section extends past the screen bottom and is not top-aligned, assume the previous one was active.
 				// only active sections larger then the viewHeight are allowed to extend past the screen bottom.
-				if (top >= viewTop + tol && bottom > viewBottom && i > 0) {
+				if (i > 0 && top >= viewTop + tol && bottom > viewBottom) {
 					i--;
 				}
 				if (this.verbose) console.table(scrollsteps);
@@ -191,7 +195,7 @@ class SectionJumper {
 		if (now > this.lastScroll && elapsedTime > 0 && dt >= this.frameDuration) {
 			let Y = window.scrollY;
 			this.lastScroll = now;
-			if (Math.abs(Y - this.toY) > 1 && elapsedTime < this.globals.scrollDuration) {
+			if (Math.abs(Y - this.toY) > 0.5 && elapsedTime < this.globals.scrollDuration) {
 				let progress = elapsedTime/this.globals.scrollDuration;
 				this.lastY = this.toY - this.distance*Math.pow(0.32,7*progress) + 1;
 				if (this.verbose) console.log("scrolling ", this.lastY, Y - this.toY);
