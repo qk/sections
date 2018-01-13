@@ -9,7 +9,7 @@ let globals = {
 	// use digits to jump to corresponding section index (careful, might cause vim-layer addons to execute the next command {digit} times)
 	useDigits: true,
 	// scrolling duration in ms
-	scrollDuration: 500,
+	scrollDuration: 600,
 	// max frames per seconds for the scrolling animation
 	scrollMaxFPS: 150,
 	// section colors
