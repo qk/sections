@@ -96,24 +96,27 @@ class SectionJumper {
 					top = section.y + headerHeight;
 					bottom = section.y + h;
 					viewTopIfSmall = viewTop + (viewHeight - h)*0.382;
-					scrollsteps.push({step:"centered", i:i, l:l, top:top, viewTop:viewTopIfSmall});
+					scrollsteps.push({step:"centered", i:i, l:l, top:top, viewTIS:viewTopIfSmall});
 					if (top >= viewTopIfSmall - tol) {
 						break;
 					}
 				}
-				scrollsteps.push({step:"final", i:i, l:l, top:top, viewTop:viewTopIfSmall});
+				scrollsteps.push({step:"final", i:i, l:l, top:top, viewTIS:viewTopIfSmall});
 				if (this.verbose) console.table(scrollsteps);
-				if (i == 0 && h < viewHeight && top >= viewTopIfSmall + tol) {
-					// // if the page was just loaded und all sections are below the alignment bar, assume i == -1
+				if (h < viewHeight && top >= viewTopIfSmall + tol)  {
 					i--;
-				} 
-				if (i > 0 && top >= viewTop + tol && bottom > viewBottom) {
+				}
+				// if (i == 0 && h < viewHeight && top >= viewTopIfSmall + tol) {
+					// // // if the page was just loaded und all sections are below the alignment bar, assume i == -1
+					// i--;
+				// }
+				else if (top >= viewTop + tol && bottom > viewBottom) {
 					// if a section extends past the screen bottom and is not top-aligned, assume the previous one was active.
 					// only active sections larger then the viewHeight are allowed to extend past the screen bottom.
 					i--;
 				}
 			}
-			console.log(scrollsteps, "=>", i);
+			// console.log(scrollsteps, "=>", i);
 			if (this.globals.wrapAroundTop && di == -1 && viewTop === 0) {
 				highlight(this.sections, this.globals.color.sections);
 				this.startScroll(this.sections.length - 1);
