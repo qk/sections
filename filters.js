@@ -395,6 +395,10 @@ function createFilters(sortupdate, verbose) {
 			return remaining;
 		},
 
+		minHeight: function(sets) {
+			return sets.map(set => set.filter(node => node.hPX > 100));
+		},
+
 		trim2: function(sets) {
 			let additional = [];
 			let num = 3;
