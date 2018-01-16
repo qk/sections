@@ -9,24 +9,22 @@
 	// find candidate sets
 	let sets;
 	let root = document.querySelector('#' + globals.contentDivIDs.join(', #')) || document.body;
-	if (false) {
-		let timer = new Timer("wrapped elements (* strategy) in");
-		let nodes = [].map.call(document.body.getElementsByTagName("*"), wrap);
-		let area = function(node) {
-			if (node.node.children.length === 0) {
-				return node.area;
-			}
-			let childrenArea = sum([].filter.call(node.node.children, ignoreTags).map(wrap).map(n => n.area));
-			return Math.max(node.area, childrenArea);
-		};
-		nodes = nodes.sort((a,b) => area(b) - area(a)).splice(0,20);
-		sets = nodes.map(node => [].map.call(node.node.children, wrap)); // list of section candidate lists
-		timer.stop();
-	} else {
-		let timer = new Timer("wrapped elements (PrioQ strategy)");
-		sets = (new SetCollector()).collect(root, null, 2, 0.1).slice(0,20);
-		timer.stop();
-	}
+	console.log('root element', root);
+	// let timer = new Timer("wrapped elements (* strategy) in");
+	// let nodes = [].map.call(document.body.getElementsByTagName("*"), wrap);
+	// let area = function(node) {
+		// if (node.node.children.length === 0) {
+			// return node.area;
+		// }
+		// let childrenArea = sum([].filter.call(node.node.children, ignoreTags).map(wrap).map(n => n.area));
+		// return Math.max(node.area, childrenArea);
+	// };
+	// nodes = nodes.sort((a,b) => area(b) - area(a)).splice(0,20);
+	// sets = nodes.map(node => [].map.call(node.node.children, wrap)); // list of section candidate lists
+	// timer.stop();
+	let timer = new Timer("wrapped elements (PrioQ strategy)");
+	sets = (new SetCollector()).collect(root, null, 2, 0.01).slice(0,20);
+	timer.stop();
 	console.table(sets.map(set => ({sections:set[0].node,  size:set.length})));
 
 	// find more candidate sets
@@ -47,6 +45,7 @@
 	function filter(sets, filters, globals, verbose) {
 		let filterchain = [
 			"discardHeaderFooter",
+			"minHeight",
 			"equalCollapsedStatus",
 			"equalTags", // costly
 			"sortupdate",
