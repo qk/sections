@@ -45,7 +45,6 @@
 	function filter(sets, filters, globals, verbose) {
 		let filterchain = [
 			"discardHeaderFooter",
-			"minHeight",
 			"equalCollapsedStatus",
 			"equalTags", // costly
 			"sortupdate",

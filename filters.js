@@ -9,7 +9,9 @@ function createFilters(sortupdate, verbose) {
 		},
 
 		minimumRequirements: function(sets) { // filter obvious negatives
-			return sets.map(set => set.filter(node => node.x >= 0 && node.wPX > 100 && node.hPX > 10));
+			let minH = 6*globals.rem;
+			let minW = 10*globals.rem;
+			return sets.map(set => set.filter(node => node.x >= 0 && node.wPX > minW && node.hPX > minH));
 		},
 
 		sortupdate: function(sets) {
@@ -393,11 +395,6 @@ function createFilters(sortupdate, verbose) {
 			}
 
 			return remaining;
-		},
-
-		minHeight: function(sets) {
-			let minH = 6*globals.rem;
-			return sets.map(set => set.filter(node => node.hPX > minH));
 		},
 
 		trim2: function(sets) {
