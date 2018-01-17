@@ -9,8 +9,8 @@ function createFilters(sortupdate, verbose) {
 		},
 
 		minimumRequirements: function(sets) { // filter obvious negatives
-			let minH = 6*globals.rem;
-			let minW = 10*globals.rem;
+			let minH = 4*globals.rem;
+			let minW = 8*globals.rem;
 			return sets.map(set => set.filter(node => node.x >= 0 && node.wPX > minW && node.hPX > minH));
 		},
 
@@ -343,7 +343,7 @@ function createFilters(sortupdate, verbose) {
 				let P = partition(sets[i], node =>
 					(/^h[01234]$/i.test(node.node.tagName) && "hx") || node.node.tagName
 				);
-				console.log(P);
+				if (verbose) console.log(P);
 				for (let p in P) {
 					if (verbose) console.log("tag", p, P[p].length);
 					equalTags.push(P[p]);
