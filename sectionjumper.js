@@ -176,7 +176,7 @@ class SectionJumper {
 		let Y = window.scrollY;
 		let pageBottom = this.globals.H - viewHeight;
 		this.toX = window.scrollX;
-		this.toY = Math.min(Math.round(y), pageBottom);
+		this.toY = Math.max(Math.min(Math.round(y), pageBottom), 0);
 		this.startY = Y;
 		this.distance = this.toY - this.startY;
 		this.restart = true;
