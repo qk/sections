@@ -259,8 +259,7 @@ class SetCollector extends PrioQ {
 }
 
 class FuzzySectionFinder {
-	constructor(root, n, globals) {
-		this.root = root;
+	constructor(n, globals) {
 		this.map = new Map();
 		this.n = n || 1000; // number of random initializations
 		this.globals = globals;
@@ -323,8 +322,8 @@ class FuzzySectionFinder {
 }
 
 class FuzzySectionFinderByPoints extends FuzzySectionFinder {
-	constructor(root, n, globals) {
-		super(root, n, globals);
+	constructor(n, globals) {
+		super(n, globals);
 	}
 
 	dist2(ax,ay,bx,by) {
@@ -346,7 +345,7 @@ class FuzzySectionFinderByPoints extends FuzzySectionFinder {
 	}
 
 	detect(root, exclude) {
-		let leafsA = (new SetCollector()).collect(root, exclude, 2, 0.01);
+		let leafsA = (new SetCollector()).collect(root, exclude, 3, 0.01);
 		if (leafsA.length <= 1) { // only 1 set found, all elmeents will have the same parentNode
 			if (leafsA.length == 1) return [{node:leafsA[0][0].parentNode, count:1.0}];
 			return [];

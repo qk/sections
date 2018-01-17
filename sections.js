@@ -23,23 +23,23 @@
 	// sets = nodes.map(node => [].map.call(node.node.children, wrap)); // list of section candidate lists
 	// timer.stop();
 	let timer = new Timer("wrapped elements (PrioQ strategy)");
-	sets = (new SetCollector()).collect(root, null, 2, 0.01).slice(0,20);
+	sets = (new SetCollector()).collect(root, null, 3, 0.01).slice(0,20);
 	timer.stop();
-	console.table(sets.map(set => ({sections:set[0].node,  size:set.length})));
+	// console.table(sets.map(set => ({sections:set[0].node,  size:set.length})));
 
 	// find more candidate sets
 	let leafsFSFTimer = new Timer("fuzzy section detection (leaf method)");
 	let leafsFSF = new FuzzySectionFinder(root, 1000, globals);
-	leafsFSF.detect(document.body);
+	leafsFSF.detect(root);
 	leafsFSFTimer.stop();
-	console.table(leafsFSF.detect(root, null).map(n => ({node:n.node, sections:n.node.children[0], size:n.node.children.length, hits:n.count})));
+	// console.table(leafsFSF.detect(root, null).map(n => ({node:n.node, sections:n.node.children[0], size:n.node.children.length, hits:n.count})));
 
 	// find even more candidate sets
 	let areaFSFTimer = new Timer("fuzzy section detection (area method)");
-	let areaFSF = new FuzzySectionFinderByPoints(document.body, 1000, globals);
-	areaFSF.detect(document.body);
+	let areaFSF = new FuzzySectionFinderByPoints(root, 1000, globals);
+	areaFSF.detect(root);
 	areaFSFTimer.stop();
-	console.table(areaFSF.detect(document.body, null).map(n => ({node:n.node, sections:n.node.children[0], size:n.node.children.length, hits:n.count})));
+	// console.table(areaFSF.detect(document.body, null).map(n => ({node:n.node, sections:n.node.children[0], size:n.node.children.length, hits:n.count})));
 
 	let filters = createFilters(sortupdate, false);
 	function filter(sets, filters, globals, verbose) {
