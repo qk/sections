@@ -29,14 +29,14 @@
 
 	// find more candidate sets
 	let leafsFSFTimer = new Timer("fuzzy section detection (leaf method)");
-	let leafsFSF = new FuzzySectionFinder(root, 1000, globals);
+	let leafsFSF = new FuzzySectionFinder(1000, globals);
 	leafsFSF.detect(root);
 	leafsFSFTimer.stop();
 	// console.table(leafsFSF.detect(root, null).map(n => ({node:n.node, sections:n.node.children[0], size:n.node.children.length, hits:n.count})));
 
 	// find even more candidate sets
 	let areaFSFTimer = new Timer("fuzzy section detection (area method)");
-	let areaFSF = new FuzzySectionFinderByPoints(root, 1000, globals);
+	let areaFSF = new FuzzySectionFinderByPoints(1000, globals);
 	areaFSF.detect(root);
 	areaFSFTimer.stop();
 	// console.table(areaFSF.detect(document.body, null).map(n => ({node:n.node, sections:n.node.children[0], size:n.node.children.length, hits:n.count})));
