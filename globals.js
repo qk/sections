@@ -15,6 +15,7 @@ let globals = {
 	// section colors
 	color: {sections:"dodgerblue", lastActive:"orange", active:"red"},
 	// GLOBAL VARIABLES
+	rem: parseFloat(getComputedStyle(document.documentElement).fontSize),
 	H: 0, // document height
 	W: 0, // document width
 	updateDocumentDims: function() {

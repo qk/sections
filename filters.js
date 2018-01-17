@@ -396,7 +396,8 @@ function createFilters(sortupdate, verbose) {
 		},
 
 		minHeight: function(sets) {
-			return sets.map(set => set.filter(node => node.hPX > 100));
+			let minH = 6*globals.rem;
+			return sets.map(set => set.filter(node => node.hPX > minH));
 		},
 
 		trim2: function(sets) {
