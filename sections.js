@@ -48,8 +48,8 @@
 			"equalCollapsedStatus",
 			"equalTags", // costly
 			"sortupdate",
-			"noDominators",
 			"minimumRequirements",
+			"noDominators",
 			"equalx",
 			// "equalWidth",
 			"sortupdate",

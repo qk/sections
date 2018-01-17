@@ -248,18 +248,8 @@ class SetCollector extends PrioQ {
 
 	collect(root, exclude, inertia, eps) {
 		this.counter = 0;
-		if (root == document.body) {
-			// skip the body element to avoid evaluating if [#header,#content,#footer] 
-			// is a valid section-set. I haven't encountered sections as direct 
-			// children of document.body yet.
-			[].filter.call(root.children, ignoreTags)
-				.map(wrap).map(update)
-				.sort((a,b) => a.y - b.y).map(update)
-				.forEach(node => this.descend(node, exclude, inertia, eps));
-		} else {
-			// start descending right at the root node
-			this.descend(wrap(root), exclude, inertia, eps);
-		}
+		// start descending right at the root node
+		this.descend(wrap(root), exclude, inertia, eps);
 		console.log("looked at", this.counter, "elements");
 		return this.Q
 			.map(q => q.set)
@@ -483,16 +473,3 @@ function download(text, filename) {
 	a.click();
 }
 
-function isUpToDate(nodeA, nodeB) {
-	let tol = 20;
-	let properties = ["hPX", "wPX", "y"];
-	let p = "";
-	for (let i = 0; i < properties.length; i++) {
-		p = properties[i];
-		log(nodeA[p], nodeB[p], Math.abs(nodeA[p]-nodeB[p]), tol);
-		if (Math.abs(nodeA[p] - nodeB[p]) > tol) {
-			return false;
-		}
-	}
-	return true;
-}
