@@ -19,6 +19,7 @@ class SectionJumper {
 		this.startTime = 0; // ms
 		this.frameDuration = 1000/(globals.scrollMaxFPS+1);
 		this.noopCount = 0;
+		this.restart = true;
 	}
 
 	// updates section size measurements
@@ -103,7 +104,8 @@ class SectionJumper {
 				}
 				scrollsteps.push({step:"final", i:i, l:l, top:top, viewTIS:viewTopIfSmall});
 				if (this.verbose) console.table(scrollsteps);
-				if (h < viewHeight && top >= viewTopIfSmall + tol)  {
+				if (h < viewHeight && top >= viewTopIfSmall + 200)  {
+					// if the first section is a small section and it's misaligned by quite a bit, align it properly first
 					i--;
 				}
 				// if (i == 0 && h < viewHeight && top >= viewTopIfSmall + tol) {
@@ -177,26 +179,29 @@ class SectionJumper {
 		this.toY = Math.min(Math.round(y), pageBottom);
 		this.startY = Y;
 		this.distance = this.toY - this.startY;
-		this.startTime = performance.now() - this.frameDuration - 1; // start scrolling in the first frame already
+		this.restart = true;
+		this.noopCount = 0;
 		if (!this.running) {
-			this.lastScroll = this.startTime;
 			this.lastY = Y;
 			this.running = true;
-			// try {
-				// this.scrollpoints = JSON.parse(GM_getValue("scrollpoints", null)) || [[]];
-			// } catch(e) {
-				// this.scrollpoints = [[]];
-			// }
 			requestAnimationFrame(this.scroll.bind(this));
 		}
 	}
 
 	// perform one scrolling step
 	scroll(now) {
-		let dt = (now - this.lastScroll);
-		let elapsedTime = (now - this.startTime);
-		// if (this.verbose) console.log("scrolling", dt, this.startY, this.lastY, this.running);
-		if (now > this.lastScroll && elapsedTime > 0 && dt >= this.frameDuration) {
+		if (this.restart) {
+			// setting startTime and lastScroll in startScroll() results in negative 
+			// dt values in the first step for some reason. it's like 
+			// requestAnimationFrame() executes before startScroll has finished.
+			this.startTime = now - this.frameDuration;
+			this.lastScroll = this.startTime;
+			this.restart = false;
+		}
+		let dt = now - this.lastScroll;
+		let elapsedTime = now - this.startTime;
+		// console.log("scrolling", now, this.lastScroll, dt, this.startY, this.lastY, this.running);
+		if (elapsedTime > 0 && dt >= this.frameDuration) {
 			let Y = window.scrollY;
 			this.lastScroll = now;
 			if (Math.abs(Y - this.toY) > 0.5 && elapsedTime < this.globals.scrollDuration) {
@@ -204,15 +209,10 @@ class SectionJumper {
 				this.lastY = this.toY - this.distance*Math.pow(0.32,7*progress) + 1;
 				if (this.verbose) console.log("scrolling ", this.lastY, Y - this.toY);
 				window.scroll(this.toX, this.lastY);
-				// this.scrollpoints[this.scrollpoints.length-1].push({now:now, Y:Y, toY:this.toY, stepY:this.lastY, elapsed:elapsedTime});
 			} else {
 				window.scroll(this.toX, this.toY);
 				this.scrollingto = -1;
 				this.running = false;
-				this.noopCount = 0;
-				// this.scrollpoints[this.scrollpoints.length-1].push({now:now, Y:Y, toY:this.toY, stepY:this.toY, elapsed:elapsedTime});
-				// this.scrollpoints.push([]);
-				// GM_setValue("scrollpoints", JSON.stringify(this.scrollpoints));
 				return;
 			}
 		} else {
