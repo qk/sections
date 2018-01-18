@@ -16,7 +16,7 @@ class Timer {
 function highlight(nodes, color) {
 	for (let i = 0; i < nodes.length; i++) {
 		if (nodes[i] && nodes[i].node) {
-			nodes[i].node.style.cssText += "border-left: 4px solid " + color + " !important; padding-left:5px !important;";
+			nodes[i].node.style.cssText += "border-left: 1px dashed " + color + " !important; padding-left:2px !important;";
 		} else {
 			if (!nodes[i]) {
 				throw "tried to highlight invalid node " + nodes[i];
