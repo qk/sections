@@ -194,19 +194,19 @@ class SectionJumper {
 			// setting startTime and lastScroll in startScroll() results in negative 
 			// dt values in the first step for some reason. it's like 
 			// requestAnimationFrame() executes before startScroll has finished.
-			this.startTime = now - this.frameDuration;
+			this.startTime = now - this.frameDuration - 1;
 			this.lastScroll = this.startTime;
 			this.restart = false;
 		}
 		let dt = now - this.lastScroll;
 		let elapsedTime = now - this.startTime;
-		// console.log("scrolling", now, this.lastScroll, dt, this.startY, this.lastY, this.running);
+		// console.log("scrolling", now, this.lastScroll, dt, this.frameDuration, this.startY, this.lastY, this.toY, elapsedTime, dt >= this.frameDuration);
 		if (elapsedTime > 0 && dt >= this.frameDuration) {
 			let Y = window.scrollY;
 			this.lastScroll = now;
 			if (Math.abs(Y - this.toY) > 0.5 && elapsedTime < this.globals.scrollDuration) {
 				let progress = elapsedTime/this.globals.scrollDuration;
-				this.lastY = this.toY - this.distance*Math.pow(0.32,7*progress) + 1;
+				this.lastY = this.toY - this.distance*Math.pow(0.5,10*progress);
 				if (this.verbose) console.log("scrolling ", this.lastY, Y - this.toY);
 				window.scroll(this.toX, this.lastY);
 			} else {
