@@ -22,22 +22,24 @@
 	// nodes = nodes.sort((a,b) => area(b) - area(a)).splice(0,20);
 	// sets = nodes.map(node => [].map.call(node.node.children, wrap)); // list of section candidate lists
 	// timer.stop();
-	let timer = new Timer("wrapped elements (PrioQ strategy)");
-	sets = (new SetCollector()).collect(root, null, 3, 0.01).slice(0,20);
-	timer.stop();
+	// let timer = new Timer("wrapped elements (PrioQ strategy)");
+	// sets = (new SetCollector()).collect(root, null, 3, 0.01).slice(0,20);
+	// timer.stop();
 	// console.table(sets.map(set => ({sections:set[0].node,  size:set.length})));
 
 	// find more candidate sets
-	let leafsFSFTimer = new Timer("fuzzy section detection (leaf method)");
-	let leafsFSF = new FuzzySectionFinder(1000, globals);
-	leafsFSF.detect(root);
-	leafsFSFTimer.stop();
+	// let leafsFSFTimer = new Timer("fuzzy section detection (leaf method)");
+	// let leafsFSF = new FuzzySectionFinder(1000, globals);
+	// leafsFSF.detect(root);
+	// leafsFSFTimer.stop();
 	// console.table(leafsFSF.detect(root, null).map(n => ({node:n.node, sections:n.node.children[0], size:n.node.children.length, hits:n.count})));
 
 	// find even more candidate sets
 	let areaFSFTimer = new Timer("fuzzy section detection (area method)");
 	let areaFSF = new FuzzySectionFinderByPoints(1000, globals);
-	areaFSF.detect(root);
+	sets = areaFSF.detect(root)
+		.map(entry => Array.from(entry.node.children).map(wrap))
+		.map(sortupdate);
 	areaFSFTimer.stop();
 	// console.table(areaFSF.detect(document.body, null).map(n => ({node:n.node, sections:n.node.children[0], size:n.node.children.length, hits:n.count})));
 
@@ -113,14 +115,14 @@
 					return 1.0;
 				}));
 			}),
-			"lF": sets.map(set => { // cross reference with sections detected fuzzily
-				let parent = set[0].node.parentNode;
-				if (leafsFSF.map.has(parent)) {
-					return leafsFSF.map.get(parent).count;
-				} else {
-					return 0.0;
-				}
-			}),
+			// "lF": sets.map(set => { // cross reference with sections detected fuzzily
+				// let parent = set[0].node.parentNode;
+				// if (leafsFSF.map.has(parent)) {
+					// return leafsFSF.map.get(parent).count;
+				// } else {
+					// return 0.0;
+				// }
+			// }),
 			"aF": sets.map(set => { // cross reference with sections detected fuzzily
 				let parent = set[0].node.parentNode;
 				if (areaFSF.map.has(parent)) {
@@ -199,7 +201,7 @@
 		scoringTimer.stop();
 
 		if (true) { // log scores to console
-			let scorefunctions = "T S L gL A lF aF W U U' 1/(1+stdH) C".split(" ").concat([scoreFormula]).map(evaluate);
+			let scorefunctions = "T S L gL A aF W U U' 1/(1+stdH) C".split(" ").concat([scoreFormula]).map(evaluate);
 			console.table(sortedI.map(i => {
 				let entry = {};
 				let index, value;
