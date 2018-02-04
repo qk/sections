@@ -419,7 +419,7 @@ function fixedHeaderHeight() {
 
 function extendSelected(sets) { // join sections from different sets
 	// sort asc. by height, then asc. by y
-	let selected = sets[0]; // assumes sets are already sorted by score
+	let selected = sets[0].slice(0); // assumes sets are already sorted by score
 	let rest = sets.slice(1).reduce(concat);
 	let ascYi = range(0, rest.length);
 	ascYi.sort((i,j) => rest[i].y == rest[j].y ? rest[j].hPX - rest[i].hPX : rest[i].y - rest[j].y);
@@ -455,7 +455,7 @@ function extendSelected(sets) { // join sections from different sets
 	}
 
 	// return modified sets
-	sets[0] = selected.sort(ascY).map(update);
+	sets.unshift(selected.sort(ascY).map(update)); // insert at pos 0
 	return sets;
 }
 
