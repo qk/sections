@@ -96,14 +96,22 @@ function createFilters(sortupdate, verbose) {
 				if (verbose) console.log("trim: classNameCounts", classNameCounts);
 
 				// partition
-				let classSets = set.map(node => new Set(node.node.classList));
-				if (verbose) console.log('classsets', classSets);
-				let P = partition(set, (node,i) => {
-					return [...intersect(classSets[i], commonClassNames)].sort().join(" ");
-				});
-				if (verbose) console.log('partition', P);
-				for (let p in P) {
-					filteredSets.push(sortupdate(P[p].map(shallowCopy)));
+				// partition by full classList of element i (might be a bit overkill)
+				// let classSets = set.map(node => new Set(node.node.classList));
+				// if (verbose) console.log('classsets', classSets);
+				// let P = partition(set, (node,i) => {
+					// return [...intersect(classSets[i], commonClassNames)].sort().join(" ");
+				// });
+				// if (verbose) console.log('partition', P);
+				// for (let p in P) {
+					// filteredSets.push(sortupdate(P[p].map(shallowCopy)));
+				// }
+
+				// partition by single classname
+				for (let className of commonClassNames) {
+					let P = partition(set, node => node.node.classList.contains(className));
+					if (P[true].length > 0) filteredSets.push(sortupdate(P[true].map(shallowCopy)));
+					if (P[true].length > 0) console.log(className, P[true].length);
 				}
 
 				// keep the original set as well (may the best win)
