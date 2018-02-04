@@ -16,7 +16,7 @@ class Timer {
 function highlight(nodes, color) {
 	for (let i = 0; i < nodes.length; i++) {
 		if (nodes[i] && nodes[i].node) {
-			nodes[i].node.style.cssText += "border-left: 4px solid " + color + " !important; padding-left:5px !important;";
+			nodes[i].node.style.cssText += "border-left: 1px dashed " + color + " !important; padding-left:4px !important;";
 		} else {
 			if (!nodes[i]) {
 				throw "tried to highlight invalid node " + nodes[i];
@@ -58,6 +58,7 @@ function wrap(node, i, set) {
 function unwrap(node) { return node.node; }
 function ascY(a,b) { return a.y - b.y; }
 function ascArea(a,b) { return a.area - b.area; }
+function ascHeight(a,b) { return a.hPX - b.hPX; }
 
 function range(from, to, stepsize) {
 	if (stepsize === undefined) stepsize = 1;
@@ -414,6 +415,48 @@ function fixedHeaderHeight() {
 		}
 	} while (Boolean(node = node.parentElement));
 	return 0;
+}
+
+function extendSelected(sets) { // join sections from different sets
+	// sort asc. by height, then asc. by y
+	let selected = sets[0]; // assumes sets are already sorted by score
+	let rest = sets.slice(1).reduce(concat);
+	let ascYi = range(0, rest.length);
+	ascYi.sort((i,j) => rest[i].y == rest[j].y ? rest[j].hPX - rest[i].hPX : rest[i].y - rest[j].y);
+	let restAscY = ascYi.map(i => rest[i]);
+	console.log(restAscY.map(e => [e.y, e.hPX].join(' ')), "rest asc y");
+
+	// add elements to selected sections
+	let fixedHeaderHeightPX = fixedHeaderHeight();
+	let viewHeight = window.innerHeight - fixedHeaderHeightPX;
+	let top = selected[0].y;
+	let bottom = selected[selected.length-1].y + selected[selected.length-1].hPX;
+	let e, y, b, add, lastB = 0;
+	for (let i = 0; i < ascYi.length; i++) {
+		e = rest[ascYi[i]];
+		y = e.y;
+		b = e.y + e.hPX; // current element bottom
+		add = false;
+		if (e.y < lastB) continue;
+		if (!((y <= top  && b <= top) || (y >= bottom && b >= bottom))) continue; // if element inside of selected sections
+		if (e.hPX > viewHeight) {
+			if (i < ascYi.length-1 && rest[ascYi[i+1]].y == y) { // if exists smaller element at same y-position
+				continue;
+			} else { // next element is further down
+				add = true;
+			}
+		} else {
+			add = true;
+		}
+		if (add) {
+			selected.push(e);
+			lastB = b;
+		}
+	}
+
+	// return modified sets
+	sets[0] = selected.sort(ascY).map(update);
+	return sets;
 }
 
 function shallowCopy(obj) {

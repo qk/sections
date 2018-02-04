@@ -218,7 +218,6 @@
 		}
 
 		let sections = sets[sortedI[0]].sort((a,b) => a.y - b.y);
-		highlight(sections, globals.color.sections);
 		let finaldepth = getDepth(sections[0].node);
 		overallTimer.msg += ", sections in depth " + finaldepth;
 		overallTimer.stop();
@@ -234,6 +233,9 @@
 	}
 	sets = filter(sets, filters, globals, false);
 	console.table(sets[0]);
+	sets = extendSelected(sets);
+	console.table(sets[0]);
+	highlight(sets[0], globals.color.sections);
 	let sj = new SectionJumper(sets[0], globals, false);
 
 	// EVENT LISTENERS
