@@ -95,7 +95,8 @@ function createFilters(sortupdate, verbose) {
 				}
 				if (verbose) console.log("trim: classNameCounts", classNameCounts);
 
-				// partition
+				// PARTITION
+
 				// partition by full classList of element i (might be a bit overkill)
 				// let classSets = set.map(node => new Set(node.node.classList));
 				// if (verbose) console.log('classsets', classSets);
