@@ -9,7 +9,7 @@ function createFilters(sortupdate, verbose) {
 		},
 
 		minimumRequirements: function(sets) { // filter obvious negatives
-			let minH = 4*globals.rem;
+			let minH = 3*globals.rem;
 			let minW = 8*globals.rem;
 			return sets.map(set => set.filter(node => node.x >= 0 && node.wPX > minW && node.hPX > minH));
 		},
