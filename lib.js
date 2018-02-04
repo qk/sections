@@ -431,18 +431,22 @@ function extendSelected(sets) { // join sections from different sets
 	let viewHeight = window.innerHeight - fixedHeaderHeightPX;
 	let top = selected[0].y;
 	let bottom = selected[selected.length-1].y + selected[selected.length-1].hPX;
-	let e, y, b, add, lastB = 0;
+	let e, y, b, add, next, lastB = 0;
 	for (let i = 0; i < ascYi.length; i++) {
 		e = rest[ascYi[i]];
 		y = e.y;
 		b = e.y + e.hPX; // current element bottom
 		add = false;
+		// TODO: maybe add a check to skip elements until a full viewHeight has accumulated
 		if (e.y < lastB) continue;
 		if (!((y <= top  && b <= top) || (y >= bottom && b >= bottom))) continue; // if element inside of selected sections
 		if (e.hPX > viewHeight) {
-			if (i < ascYi.length-1 && rest[ascYi[i+1]].y == y) { // if exists smaller element at same y-position
-				continue;
-			} else { // next element is further down
+			if (i < ascYi.length-1) {
+				next = rest[ascYi[i+1]];
+				if (next.y + next.hPX <= b) { // if exists smaller element that ends inside the current
+					continue;
+				}
+			} else {
 				add = true;
 			}
 		} else {
