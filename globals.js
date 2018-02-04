@@ -13,7 +13,7 @@ let globals = {
 	// max frames per seconds for the scrolling animation
 	scrollMaxFPS: 150,
 	// section colors
-	color: {sections:"steelblue", lastActive:"orange", active:"darkred"},
+	color: {sections:"steelblue", lastActive:"orange", active:"red"},
 	// GLOBAL VARIABLES
 	rem: parseFloat(getComputedStyle(document.documentElement).fontSize),
 	H: 0, // document height
