@@ -241,7 +241,7 @@
 	// register mutation observer and handle newly inserted dom nodes
 	// let sectionParent = sets[0][0].node.parentNode;
 	let commonClasses = [].reduce.call(
-		sets[0].map(e => new Set(e.node.classList)),
+		sets[1].map(e => new Set(e.node.classList)), // sets[0] is the extendSelected'() set, sets[1] the original one
 		intersect
 	);
 	console.log("commonClasses", commonClasses);
