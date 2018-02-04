@@ -10,31 +10,7 @@
 	let sets;
 	let root = document.querySelector('#' + globals.contentDivIDs.join(', #')) || document.body;
 	console.log('root element', root);
-	// let timer = new Timer("wrapped elements (* strategy) in");
-	// let nodes = [].map.call(document.body.getElementsByTagName("*"), wrap);
-	// let area = function(node) {
-		// if (node.node.children.length === 0) {
-			// return node.area;
-		// }
-		// let childrenArea = sum([].filter.call(node.node.children, ignoreTags).map(wrap).map(n => n.area));
-		// return Math.max(node.area, childrenArea);
-	// };
-	// nodes = nodes.sort((a,b) => area(b) - area(a)).splice(0,20);
-	// sets = nodes.map(node => [].map.call(node.node.children, wrap)); // list of section candidate lists
-	// timer.stop();
-	// let timer = new Timer("wrapped elements (PrioQ strategy)");
-	// sets = (new SetCollector()).collect(root, null, 3, 0.01).slice(0,20);
-	// timer.stop();
-	// console.table(sets.map(set => ({sections:set[0].node,  size:set.length})));
 
-	// find more candidate sets
-	// let leafsFSFTimer = new Timer("fuzzy section detection (leaf method)");
-	// let leafsFSF = new FuzzySectionFinder(1000, globals);
-	// leafsFSF.detect(root);
-	// leafsFSFTimer.stop();
-	// console.table(leafsFSF.detect(root, null).map(n => ({node:n.node, sections:n.node.children[0], size:n.node.children.length, hits:n.count})));
-
-	// find even more candidate sets
 	let areaFSFTimer = new Timer("fuzzy section detection (area method)");
 	let areaFSF = new FuzzySectionFinderByPoints(1000, globals);
 	sets = areaFSF.detect(root)
