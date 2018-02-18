@@ -17,6 +17,7 @@ def build(out_fname=None, **keywords):
 			raise ValueError('{} not found'.format(fname))
 		with open(fname, "r") as in_file:
 			in_text = in_file.read()
+			in_text, _ = re.subn(r'\\', r'\\\\', in_text)
 		text, _ = re.subn(name, in_text, text)
 	
 	with open(out_fname, "w") as out_file:
