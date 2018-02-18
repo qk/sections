@@ -518,4 +518,3 @@ function download(text, filename) {
 	a.download = filename;
 	a.click();
 }
-

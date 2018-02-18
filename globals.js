@@ -10,8 +10,6 @@ let globals = {
 	useDigits: true,
 	// scrolling duration in ms
 	scrollDuration: 600,
-	// max frames per seconds for the scrolling animation
-	scrollMaxFPS: 150,
 	// section colors
 	color: {sections:"steelblue", lastActive:"orange", active:"red"},
 	// GLOBAL VARIABLES

@@ -17,9 +17,9 @@ class SectionJumper {
 		this.startY = 0; // px
 		this.distance = 0; // px
 		this.startTime = 0; // ms
-		this.frameDuration = 1000/(globals.scrollMaxFPS+1);
 		this.noopCount = 0;
 		this.restart = true;
+		this.boundScroll = this.scroll.bind(this);
 	}
 
 	// updates section size measurements
@@ -184,7 +184,7 @@ class SectionJumper {
 		if (!this.running) {
 			this.lastY = Y;
 			this.running = true;
-			requestAnimationFrame(this.scroll.bind(this));
+			requestAnimationFrame(this.boundScroll);
 		}
 	}
 
@@ -194,14 +194,14 @@ class SectionJumper {
 			// setting startTime and lastScroll in startScroll() results in negative 
 			// dt values in the first step for some reason. it's like 
 			// requestAnimationFrame() executes before startScroll has finished.
-			this.startTime = now - this.frameDuration - 1;
+			this.startTime = now - 16; // 16ms is equiv. to 60 fps
 			this.lastScroll = this.startTime;
 			this.restart = false;
 		}
 		let dt = now - this.lastScroll;
 		let elapsedTime = now - this.startTime;
-		// console.log("scrolling", now, this.lastScroll, dt, this.frameDuration, this.startY, this.lastY, this.toY, elapsedTime, dt >= this.frameDuration);
-		if (elapsedTime > 0 && dt >= this.frameDuration) {
+		// console.log("scrolling", now, this.lastScroll, dt, this.startY, this.lastY, this.toY, elapsedTime);
+		if (elapsedTime > 0) {
 			let Y = window.scrollY;
 			this.lastScroll = now;
 			if (Math.abs(Y - this.toY) > 0.5 && elapsedTime < this.globals.scrollDuration) {
@@ -213,7 +213,7 @@ class SectionJumper {
 				window.scroll(this.toX, this.toY);
 				this.scrollingto = -1;
 				this.running = false;
-				return;
+				return; // don't request another animation-frame
 			}
 		} else {
 			this.noopCount += 1;
@@ -221,6 +221,6 @@ class SectionJumper {
 		if (this.noopCount > 50) {
 			throw "scrolling noop's exceeded";
 		}
-		requestAnimationFrame(this.scroll.bind(this));
+		requestAnimationFrame(this.boundScroll);
 	}
 }
