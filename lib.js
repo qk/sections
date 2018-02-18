@@ -111,6 +111,10 @@ function softmax(A) {
 	return A.map(v => v/sumA);
 }
 
+function contain(minimum, value, maximum) {
+	return Math.max(Math.min(value, maximum), minimum);
+}
+
 function getDepth(node) {
 	let depth = 0;
 	while (node != document.body) {

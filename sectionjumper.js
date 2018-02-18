@@ -165,36 +165,38 @@ class SectionJumper {
 	// initiate scrolling animation
 	startScroll(i, clientY) {
 		this.scrollingto = i;
-		let h, y;
+		let h, toY;
 		let viewHeight = window.innerHeight - this.fixedHeaderHeightPX;
 		if (i == -1) {
 			if (this.verbose) console.log("scrolling to top");
-			y = 0;
+			toY = 0;
 		} else if (i == this.sections.length) {
 			if (this.verbose) console.log("scrolling to bottom");
-			y = this.globals.H - window.innerHeight;
+			toY = this.globals.H - window.innerHeight;
 		} else {
 			let section = this.sections[i];
+			let y = section.y;
 			highlight([section], this.globals.color.active);
 			h = section.hPX;
 			if (h < viewHeight) {
 				if (clientY >= 0) {
-					let alignTop = section.y - this.fixedHeaderHeightPX;
-					let alignBottom = section.y + h - viewHeight - this.fixedHeaderHeightPX;
-					y = section.y + h/2 - clientY;
-					y = Math.min(Math.max(alignBottom, y), alignTop);
+					toY = contain(
+						y + h - viewHeight - this.fixedHeaderHeightPX, // align to bottom
+						y + h/2 - clientY, // center on mouse
+						y - this.fixedHeaderHeightPX // align to top
+					);
 				} else {
 					// approx. center section vertically, if it fits
-					y = section.y - (viewHeight - h)*0.382 - this.fixedHeaderHeightPX;
+					toY = y - (viewHeight - h)*0.382 - this.fixedHeaderHeightPX;
 				}
 			} else {
-				y = section.y - this.fixedHeaderHeightPX;
+				toY = y - this.fixedHeaderHeightPX;
 			}
 		}
 		let Y = window.scrollY;
 		let pageBottom = this.globals.H - viewHeight;
 		this.toX = window.scrollX;
-		this.toY = Math.max(Math.min(Math.round(y), pageBottom), 0);
+		this.toY = contain(0, toY, pageBottom);
 		this.startY = Y;
 		this.distance = this.toY - this.startY;
 		this.restart = true;
