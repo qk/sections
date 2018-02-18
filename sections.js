@@ -303,12 +303,12 @@
 		if (e.key == "ArrowDown") {
 			e.stopPropagation();
 			e.preventDefault();
-			sj.jump(1);
+			sj.jump(1, -1);
 			return false;
 		} else if (e.key == "ArrowUp") {
 			e.stopPropagation();
 			e.preventDefault();
-			sj.jump(-1);
+			sj.jump(-1, -1);
 			return false;
 		} else if (globals.useDigits && /\d/.test(e.key)) { // digit 0-9
 			let i = parseInt(e.key, 10);
@@ -333,9 +333,9 @@
 				e.preventDefault();
 				// console.log(e);
 				if (e.deltaY > 0) {
-					sj.jump(1);
+					sj.jump(1, e.clientY);
 				} else if (e.deltaY < 0) {
-					sj.jump(-1);
+					sj.jump(-1, e.clientY);
 				}
 				return false;
 			}
