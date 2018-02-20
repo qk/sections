@@ -228,11 +228,15 @@
 				this.elements = [];
 			}
 		},
-		reinitialize: function(newSections) {
+		reinitialize: function(newSections, use_filters) {
 			// collect scores to help find a more robust scoring formula
 			console.log("REINITIALIZING");
 			sj.sections.forEach(node => {node.node.style.cssText = "";});
-			sj.sections = filter([newSections], filters, globals, false)[0];
+			if (use_filters) {
+				sj.sections = filter([newSections], filters, globals, false)[0];
+			} else {
+				sj.sections = newSections;
+			}
 			console.log(sj.sections.map(node => node.node));
 			highlight(sj.sections, globals.color.sections);
 		}
@@ -279,7 +283,7 @@
 			console.log("SECTION MUTATION DETECTED");
 			let nodes = document.body.querySelectorAll("."+[...commonClasses].join("."));
 			console.log(nodes, "NODES TO REINIT ON");
-			reinit.reinitialize([...nodes].map(wrap));
+			reinit.reinitialize([...nodes].map(wrap), false);
 		}
 	});
 	// let observedNode = sectionParent;
@@ -384,7 +388,7 @@
 				// select sets i as best and reinitialize
 				let i = parseInt(command.match(/(^\d+)/)[1]);
 				console.log('MANUAL SCORE OVERRIDE');
-				reinit.reinitialize(sets[i]);
+				reinit.reinitialize(sets[i], false);
 				console.log(i);
 				highlight(sj.sections, globals.color.sections);
 				if (/!$/.test(command)) {
