@@ -127,6 +127,16 @@ class SectionJumper {
 						}
 					}
 					i--;
+					if (i >= 0 && i < this.sections.length) {
+						section = this.sections[i];
+						if (section.y + section.hPX > viewBottom + tol) {
+							// if a section extends past the screen bottom and is not 
+							// top-aligned, assume the previous one was active.
+							// only active sections larger then the viewHeight are allowed to 
+							// extend past the screen bottom.
+							i--;
+						}
+					}
 				}
 			}
 			// console.log(scrollsteps, "=>", i);
@@ -218,28 +228,18 @@ class SectionJumper {
 			this.lastScroll = this.startTime;
 			this.restart = false;
 		}
-		let dt = now - this.lastScroll;
 		let elapsedTime = now - this.startTime;
 		// console.log("scrolling", now, this.lastScroll, dt, this.startY, this.lastY, this.toY, elapsedTime);
-		if (elapsedTime > 0) {
-			let Y = window.scrollY;
-			this.lastScroll = now;
-			if (Math.abs(Y - this.toY) > 0.5 && elapsedTime < this.globals.scrollDuration) {
-				let progress = elapsedTime/this.globals.scrollDuration;
-				this.lastY = this.toY - this.distance*Math.pow(0.5,10*progress);
-				if (this.verbose) console.log("scrolling ", this.lastY, Y - this.toY);
-				window.scroll(this.toX, this.lastY);
-			} else {
-				window.scroll(this.toX, this.toY);
-				this.scrollingto = -1;
-				this.running = false;
-				return; // don't request another animation-frame
-			}
-		} else {
-			this.noopCount += 1;
-		}
-		if (this.noopCount > 50) {
-			throw "scrolling noop's exceeded";
+		let Y = window.scrollY;
+		this.lastScroll = now;
+		let progress = elapsedTime/this.globals.scrollDuration;
+		this.lastY = this.toY - parseInt(this.distance*Math.pow(0.5,10*progress));
+		if (this.verbose) console.log("scrolling ", this.lastY, Y - this.toY);
+		window.scroll(this.toX, this.lastY);
+		if (Math.abs(Y - this.toY) < 1 || elapsedTime > this.globals.scrollDuration) {
+			this.scrollingto = -1;
+			this.running = false;
+			return; // don't request another animation-frame
 		}
 		requestAnimationFrame(this.boundScroll);
 	}
