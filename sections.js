@@ -389,8 +389,9 @@
 				highlight(sj.sections, globals.color.sections);
 				if (/!$/.test(command)) {
 					// store as training data
+					console.log('storing sections');
 					data = JSON.parse(GM_getValue("points", null)) || [];
-					data.append({best:i, sets:sets.map(set => {
+					data.push({best:i, sets:sets.map(set => {
 						return set.map(shallowCopy).map(n => {
 							n.tag = n.node.tagName;
 							n.classes = n.node.classList;
