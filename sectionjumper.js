@@ -129,7 +129,9 @@ class SectionJumper {
 					i--;
 					if (i >= 0 && i < this.sections.length) {
 						section = this.sections[i];
-						if (section.y + section.hPX > viewBottom + tol) {
+						top = section.y + headerHeight;
+						bottom = section.y + section.hPX;
+						if (top >= viewTop + tol && bottom > viewBottom + tol) {
 							// if a section extends past the screen bottom and is not 
 							// top-aligned, assume the previous one was active.
 							// only active sections larger then the viewHeight are allowed to 
