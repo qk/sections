@@ -8,6 +8,11 @@ function createFilters(sortupdate, verbose) {
 			return sets.filter(set => set.length > 1);
 		},
 
+		onLeftSide: function(sets) {
+			let halfway = window.innerWidth/2;
+			return sets.map(set => set.filter(node => node.x <= halfway));
+		},
+
 		minimumRequirements: function(sets) { // filter obvious negatives
 			let minH = 3*globals.rem;
 			let minW = 8*globals.rem;

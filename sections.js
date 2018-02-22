@@ -24,6 +24,7 @@
 		let filterchain = [
 			"discardHeaderFooter",
 			"equalCollapsedStatus",
+			"onLeftSide",
 			"equalTags", // costly
 			"sortupdate",
 			"minimumRequirements",
