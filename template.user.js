@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Sections
-// @namespace    http://tampermonkey.net/
+// @namespace    http://github.com/qk/sections
 // @run-at       document-end
 // @version      0.3
-// @description  Detect and Jump through Sections (blog posts) of a webpage. Won't work on pages that reject inline-scripts (steam, github, etc) or on pages that load Prototype.js.
+// @description  Detect and jump through sections (f.i. blog posts) of a webpage. Won't work on pages that reject inline-scripts (steam, chrome store, etc) or on pages that idiotically load Prototype.js.
 // @author       p
 // @match        http://*/*
 // @match        https://*/*
