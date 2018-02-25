@@ -24,13 +24,13 @@ class SectionJumper {
 	}
 
 	// updates section size measurements
-	update() {
+	update(force) {
 		this.updateTimer.reset();
 		// update section positions if document parts were resized after the sections were detected
 		// always update all sections, it's fast and there are no onElementResize handlers available
 		let H = this.globals.H;
 		this.globals.updateDocumentDims();
-		if (H != this.globals.H) {
+		if (force || H != this.globals.H) {
 			this.sections = sortupdate(this.sections);
 		}
 		this.updateTimer.stop();
@@ -58,7 +58,6 @@ class SectionJumper {
 			}
 			this.startScroll(i, clientY);
 		} else {
-			this.update(); // check if section dimensions measured at the start are still accurate
 			// figure out current section index
 			let oldHeaderHeight = this.fixedHeaderHeightPX;
 			this.fixedHeaderHeightPX = fixedHeaderHeight();
@@ -171,7 +170,7 @@ class SectionJumper {
 				if (this.verbose) console.log("couldn't find current section, i", i, "sections y", this.sections.map(s => s.y), "Y", viewTop);
 				i = 0;
 			}
-		}
+		} // scrolling-to was -1
 	}
 
 	// initiate scrolling animation
@@ -241,6 +240,7 @@ class SectionJumper {
 		if (Math.abs(Y - this.toY) < 1 || elapsedTime > this.globals.scrollDuration) {
 			this.scrollingto = -1;
 			this.running = false;
+			this.update(false); // check if section dimensions measured at the start are still accurate
 			return; // don't request another animation-frame
 		}
 		requestAnimationFrame(this.boundScroll);

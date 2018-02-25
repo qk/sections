@@ -296,6 +296,12 @@
 		observer.observe(document.body, {childList:true, subtree:true});
 	}
 
+	window.addEventListener("load", () => {
+		// refresh everything (incl. images) is loaded
+		console.log("onloadevent fired");
+		sj.update(true);
+	});
+
 	window.addEventListener("keydown", e => {
 		// console.log(e); // uncomment this to see keyboard button details on the console
 		if (e.ctrlKey || e.shiftKey || e.metaKey) return;
