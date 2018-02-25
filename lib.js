@@ -443,7 +443,7 @@ function extendSelected(sets) { // join sections from different sets
 		add = false;
 		// TODO: maybe add a check to skip elements until a full viewHeight has accumulated
 		if (e.y < lastB) continue;
-		if (!((y <= top  && b <= top) || (y >= bottom && b >= bottom))) continue; // if element inside of selected sections
+		if (!((y < top  && b < top) || (y > bottom && b > bottom))) continue; // if element inside of selected sections
 		if (e.hPX > viewHeight) {
 			if (i < ascYi.length-1) {
 				next = rest[ascYi[i+1]];
