@@ -5,14 +5,14 @@ let globals = {
 	// press DOWN on the last section to go to the first
 	wrapAroundBottom: false,
 	// use scroll wheel to jump
-	useScrollWheel: true,
+	useScrollWheel: false,
 	// use digits to jump to corresponding section index (careful, might cause vim-layer addons to execute the next command {digit} times)
 	useDigits: true,
 	// scrolling duration in ms
 	scrollDuration: 600,
 	// section colors
 	color: {sections:"steelblue", lastActive:"orange", active:"red"},
-	// GLOBAL VARIABLES
+	// GLOBAL VARIABLES, don't touch these
 	rem: parseFloat(getComputedStyle(document.documentElement).fontSize),
 	H: 0, // document height
 	W: 0, // document width
