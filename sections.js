@@ -210,7 +210,7 @@
 	}
 	sets = filter(sets, filters, globals, false);
 	console.table(sets[0]);
-	sets = extendSelected(sets);
+	// sets = extendSelected(sets);
 	console.table(sets[0]);
 	highlight(sets[0], globals.color.sections);
 	let sj = new SectionJumper(sets[0], globals, false);
