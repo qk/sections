@@ -14,17 +14,19 @@ class Timer {
 }
 
 function highlight(nodes, color) {
-	for (let i = 0; i < nodes.length; i++) {
-		if (nodes[i] && nodes[i].node) {
-			nodes[i].node.style.cssText += "border-left: 4px solid " + color + " !important; padding-left:4px !important;";
-		} else {
-			if (!nodes[i]) {
-				throw "tried to highlight invalid node " + nodes[i];
-			} else if (!nodes[i].node) {
-				throw "tried to highlight invalid (unwrapped?) node " + nodes[i] + ", which' .node is " + nodes[i].node;
+	window.requestAnimationFrame(_ => {
+		for (let i = 0; i < nodes.length; i++) {
+			if (nodes[i] && nodes[i].node) {
+				nodes[i].node.style.cssText += "border-left: 4px solid " + color + " !important; padding-left:4px !important;";
+			} else {
+				if (!nodes[i]) {
+					throw "tried to highlight invalid node " + nodes[i];
+				} else if (!nodes[i].node) {
+					throw "tried to highlight invalid (unwrapped?) node " + nodes[i] + ", which' .node is " + nodes[i].node;
+				}
 			}
 		}
-	}
+	});
 }
 
 // ~scoring function for section lengths
