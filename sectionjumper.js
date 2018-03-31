@@ -58,6 +58,7 @@ class SectionJumper {
 			}
 			this.startScroll(i, clientY);
 		} else {
+			this.update(true); // check if section dimensions measured at the start are still accurate
 			// figure out current section index
 			let oldHeaderHeight = this.fixedHeaderHeightPX;
 			this.fixedHeaderHeightPX = fixedHeaderHeight();
@@ -240,7 +241,6 @@ class SectionJumper {
 		if (Math.abs(Y - this.toY) < 1 || elapsedTime > this.globals.scrollDuration) {
 			this.scrollingto = -1;
 			this.running = false;
-			this.update(false); // check if section dimensions measured at the start are still accurate
 			return; // don't request another animation-frame
 		}
 		requestAnimationFrame(this.boundScroll);
